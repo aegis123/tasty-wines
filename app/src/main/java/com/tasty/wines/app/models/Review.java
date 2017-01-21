@@ -1,34 +1,22 @@
 package com.tasty.wines.app.models;
 
 
-import java.util.Calendar;
-
 public class Review {
 
-    public long id;
     public String body;
     public int score;
-    public Calendar date;
+    public long date;
 
     public User user;
 
     public Review() {
     }
 
-    public Review(long id, String body, int score, Calendar date, User user) {
-        this.id = id;
+    public Review(String body, int score, long date, User user) {
         this.body = body;
         this.score = score;
         this.date = date;
         this.user = user;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getBody() {
@@ -47,11 +35,11 @@ public class Review {
         this.score = score;
     }
 
-    public Calendar getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
