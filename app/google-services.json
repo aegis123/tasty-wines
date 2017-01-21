@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "509843445645",
+    "firebase_url": "https://tasty-wine.firebaseio.com",
+    "project_id": "tasty-wine",
+    "storage_bucket": "tasty-wine.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509843445645:android:4d2f54c4178c0e7f",
+        "android_client_info": {
+          "package_name": "com.tasty.wines.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509843445645-eeum255l0rc25j7li6246ierh9lctg6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tasty.wines.app",
+            "certificate_hash": "A5016D4D8046242DB7E2B206EB70DE32717E75B1"
+          }
+        },
+        {
+          "client_id": "509843445645-7l6p45gjr77nkhpfbmessv5rtdihlmh7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tasty.wines.app",
+            "certificate_hash": "AEA9A1A0F576ECA6A5B64497F583C74739CB488B"
+          }
+        },
+        {
+          "client_id": "509843445645-ehh4ilr2i9eq86a8gjrasveh239a7uoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC95rLJahZajoFbMoNk8p76bXiQ7xYHoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509843445645-ehh4ilr2i9eq86a8gjrasveh239a7uoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
