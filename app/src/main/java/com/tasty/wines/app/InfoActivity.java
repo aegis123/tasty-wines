@@ -47,6 +47,7 @@ public class InfoActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     private final DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+    private FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter;
 
     public static void startInfoActivity(Context context, @NonNull final String key, @NonNull final String name) {
         Intent intent = new Intent(context, InfoActivity.class);
@@ -63,14 +64,12 @@ public class InfoActivity extends AppCompatActivity {
         new InfoActivity_ViewBinding<>(this, getWindow().getDecorView());
         //recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        setSupportActionBar(toolbar);
         if (getIntent().hasExtra(DB_KEY)) {
             String key = getIntent().getStringExtra(DB_KEY);
             String wineName = getIntent().getStringExtra(WINE_NAME);
             DatabaseReference wineDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/wines").child(key);
-            DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews");
-
-            final Query queryReview = reviewRef.orderByChild("wine").equalTo(wineName);
+            final Query reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews").orderByChild("wine").equalTo(wineName);
 
             wineDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -94,7 +93,7 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
 
-            final FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, queryReview) {
+            firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, reviewRef) {
                 @Override
                 protected void populateViewHolder(ReviewViewHolder viewHolder, Review model, int position) {
                     viewHolder.setReview(model);
@@ -106,5 +105,11 @@ public class InfoActivity extends AppCompatActivity {
         } else {
             throw new RuntimeException("activity not started with a " + DB_KEY + " in the intent");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseRecyclerAdapter.cleanup();
     }
 }

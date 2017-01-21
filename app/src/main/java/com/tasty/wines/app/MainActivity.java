@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.rv_winelist)
     RecyclerView recyclerView;
-    private RecyclerView.Adapter<WineViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Wine, WineViewHolder> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,5 +90,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.cleanup();
     }
 }

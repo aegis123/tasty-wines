@@ -64,6 +64,7 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            android:visibility="gone"/>
     </FrameLayout>
 </LinearLayout>
