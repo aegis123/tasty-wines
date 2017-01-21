@@ -10,9 +10,6 @@ public class Wine {
     public static final String WHITE = "white";
     public static final String ROSE = "rose";
 
-    @Exclude
-    private String id;
-
     private String color;
 
     private String grape;
@@ -29,6 +26,7 @@ public class Wine {
 
     private float rating = 0;
 
+    @Exclude
     private String key;
 
     private Calendar dateAdded;
@@ -44,14 +42,6 @@ public class Wine {
         this.winery = winery;
         this.country = country;
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getColor() {

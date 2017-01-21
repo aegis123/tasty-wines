@@ -43,20 +43,20 @@ public class LoginHelper {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    Toast.makeText(activity, "Sign-in cancelled", Toast.LENGTH_LONG);
+                    Toast.makeText(activity, "Sign-in cancelled", Toast.LENGTH_LONG).show();
 
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    Toast.makeText(activity, "No network", Toast.LENGTH_LONG);
+                    Toast.makeText(activity, "No network", Toast.LENGTH_LONG).show();
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(activity, "Unknown Error", Toast.LENGTH_LONG);
+                    Toast.makeText(activity, "Unknown Error", Toast.LENGTH_LONG).show();
                 }
             }
 
-            Toast.makeText(activity, "Unknown response", Toast.LENGTH_LONG);
+            Toast.makeText(activity, "Unknown response", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

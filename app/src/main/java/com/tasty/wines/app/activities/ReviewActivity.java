@@ -2,8 +2,11 @@ package com.tasty.wines.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -12,6 +15,8 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +31,7 @@ import com.tasty.wines.app.models.User;
 import com.tasty.wines.app.models.Wine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReviewActivity extends AppCompatActivity {
 
@@ -39,20 +45,24 @@ public class ReviewActivity extends AppCompatActivity {
 
     private boolean loggedIn = false;
     private String userName = "";
-    private DatabaseReference mWineReference;
+
 
     private RatingBar ratingBar;
     private EditText reviewBody;
     private AutoCompleteTextView wineGrape;
     private AutoCompleteTextView wineName;
     private AutoCompleteTextView wineColor;
+    private EditText wineYear;
 
     private String uid;
-    private ValueEventListener valueListener;
 
     ArrayAdapter<String> autoCompleteWineNames;
     ArrayAdapter<String> autoCompleteWineGrapes;
     ArrayAdapter<String> autoCompleteWineColors;
+
+    private List<Wine> wines = new ArrayList<>();
+    private EditText wineCountry;
+    private EditText wineWinery;
 
 
     @Override
@@ -72,6 +82,37 @@ public class ReviewActivity extends AppCompatActivity {
         wineGrape = (AutoCompleteTextView) findViewById(R.id.review_grape);
         wineName = (AutoCompleteTextView) findViewById(R.id.review_wine_name);
         wineColor = (AutoCompleteTextView) findViewById(R.id.review_color);
+        wineYear = (EditText) findViewById(R.id.review_year);
+
+        wineCountry = (EditText) findViewById(R.id.review_country);
+        wineWinery = (EditText) findViewById(R.id.review_winery);
+
+        wineName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String value = editable.toString();
+                if (value == null || value.length() <= 1) {
+                    return;
+                }
+                for (Wine wine : wines) {
+                    if (wine.getName().equals(value)) {
+                        wineColor.setText(wine.getColor());
+                        wineGrape.setText(wine.getGrape());
+                        wineCountry.setText(wine.getCountry());
+                        wineWinery.setText(wine.getWinery());
+                        wineYear.setText("" + wine.getYear());
+                    }
+                }
+            }
+        });
 
         Button addButton = (Button) findViewById(R.id.review_add);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +164,8 @@ public class ReviewActivity extends AppCompatActivity {
                 for (DataSnapshot g : grapesInDb) {
                     Grape grape = g.getValue(Grape.class);
                     if (grape != null) {
+                        //Yes, this is O^2
+                        autoCompleteWineGrapes.remove(grape.getGrape());
                         autoCompleteWineGrapes.add(grape.getGrape());
                     }
                 }
@@ -157,6 +200,9 @@ public class ReviewActivity extends AppCompatActivity {
                 for (DataSnapshot g : winesInDb) {
                     Wine wine = g.getValue(Wine.class);
                     if (wine != null) {
+                        wine.setKey(g.getKey());
+                        wines.add(wine);
+
                         autoCompleteWineNames.add(wine.getName());
                     }
                 }
@@ -166,52 +212,78 @@ public class ReviewActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        wineName.setAdapter(autoCompleteWineGrapes);
+        wineName.setAdapter(autoCompleteWineNames);
     }
 
     private void loadWineInfo() {
         Intent intent = getIntent();
 
-        wineIdToReview = (intent != null) ? intent.getStringExtra(EXTRA_WINE) : null;
+        wineIdToReview = (intent != null) ? intent.getStringExtra(EXTRA_WINE) : "";
 
-        if (wineIdToReview == null) {
-            Toast.makeText(this, "No wine defined", Toast.LENGTH_LONG);
-            wineIdToReview = "-Kb0-WZ0C7Zp6VNhdv7a"; //TODO remove
-            //finish();
-            //return;
-        }
-        mWineReference = mFirebaseDatabase.getReference().child("wines").child(wineIdToReview);
-
-        valueListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Wine wine = dataSnapshot.getValue(Wine.class);
-                if (wine != null) {
-                    setTitle("Rate wine: " + wine.getName());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        mWineReference.addListenerForSingleValueEvent(valueListener);
+        wineName.setText(wineIdToReview);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if (valueListener != null) {
-            mWineReference.removeEventListener(valueListener);
-            valueListener = null;
+    }
+
+    private void saveWine(final DatabaseReference wineReference, Wine wine, final Review review) {
+        wine.setName(wineName.getText().toString());
+        wine.setColor(wineColor.getText().toString());
+        wine.setCountry(wineCountry.getText().toString());
+        wine.setGrape(wineGrape.getText().toString());
+        wine.setWinery(wineWinery.getText().toString());
+        wine.setYear(Integer.parseInt(wineYear.getText().toString()));
+
+        wineReference.setValue(wine).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                DatabaseReference reviewReference = mFirebaseDatabase.getReference("reviews").push();
+                reviewReference.setValue(review);
+            }
+        });
+    }
+
+    private void saveWine(final Review review) {
+        String wine = wineName.getText().toString();
+        if (wine.length() < 3) {
+            Toast.makeText(this, "Wine name too short", Toast.LENGTH_LONG).show();
+            return;
         }
+
+        Wine existingWine = null;
+        for (Wine w : wines) {
+            if (w.getName().equals(wine)) {
+                existingWine = w;
+            }
+        }
+
+        DatabaseReference winesReference = mFirebaseDatabase.getReference("wines");
+        final DatabaseReference wineReference;
+
+        if (existingWine == null) {
+            wineReference = winesReference.push();
+            Wine wineToSave = new Wine();
+            saveWine(wineReference, wineToSave, review);
+        } else {
+            wineReference = winesReference.child(existingWine.getKey());
+            wineReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    saveWine(wineReference, dataSnapshot.getValue(Wine.class), review);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+
     }
 
     private void add() {
-
         User user = new User();
         user.setNickname(userName);
         user.setUid(uid);
@@ -221,10 +293,9 @@ public class ReviewActivity extends AppCompatActivity {
         reviewToSave.setDate(System.currentTimeMillis());
         reviewToSave.setScore(Math.round(ratingBar.getRating()));
         reviewToSave.setUser(user);
+        reviewToSave.setWine(wineName.getText().toString());
 
-        mWineReference.child("reviews").push().setValue(reviewToSave);
-
-        reviewBody.setText("");
+        saveWine(reviewToSave);
     }
 
     @Override
