@@ -40,7 +40,7 @@ public class LoginHelper {
                 if (response == null) {
                     // User pressed back button
                     Toast.makeText(activity, "Sign-in cancelled", Toast.LENGTH_LONG).show();
-
+                    return false;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
