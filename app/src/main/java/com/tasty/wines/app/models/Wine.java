@@ -1,6 +1,8 @@
 package com.tasty.wines.app.models;
 
 
+import java.util.Calendar;
+
 public class Wine {
 
     public static final String RED = "red";
@@ -22,7 +24,10 @@ public class Wine {
     private String name;
 
     private float rating = 0;
+
     private String key;
+
+    private Calendar dateAdded;
 
     public Wine() {
     }
@@ -107,5 +112,13 @@ public class Wine {
 
     public String getKey() {
         return key;
+    }
+
+    public Calendar getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Calendar dateAdded) {
+        this.dateAdded = dateAdded;
     }
 }

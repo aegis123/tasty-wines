@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.tasty.wines.app.models.Wine;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import butterknife.BindView;
 
 
@@ -22,6 +25,7 @@ class WineViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.rt_rating)
     RatingBar ratingBar;
 
+    private final DateFormat dateFormat = SimpleDateFormat.getDateInstance();
     private Wine wine;
 
     public WineViewHolder(View itemView) {
@@ -38,7 +42,10 @@ class WineViewHolder extends RecyclerView.ViewHolder {
     private void updateView() {
         winery.setText(wine.getWinery());
         name.setText(wine.getWinery());
-        date.setText(wine.getWinery());
+        if (wine.getDateAdded() != null) {
+
+            date.setText(dateFormat.format(wine.getDateAdded().getTime()));
+        }
         year.setText(String.format("%s", wine.getYear()));
         ratingBar.setRating(wine.getRating());
     }

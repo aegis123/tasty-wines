@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tasty.wines.app.models.Wine;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         new MainActivity_ViewBinding<>(this, getWindow().getDecorView());
 
         setSupportActionBar(toolbar);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/wines");
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -44,7 +46,17 @@ public class MainActivity extends AppCompatActivity {
                 Wine wine = super.parseSnapshot(snapshot);
                 if (wine != null) {
                     wine.setKey(snapshot.getKey());
+
+                    final DataSnapshot dateAdded = snapshot.child("dateAdded");
+
+                    if (dateAdded.exists()) {
+                        Long timeStamp = (Long) dateAdded.getValue();
+                        final Calendar instance = Calendar.getInstance();
+                        instance.setTimeInMillis(timeStamp);
+                        wine.setDateAdded(instance);
+                    }
                 }
+
                 return wine;
             }
 
