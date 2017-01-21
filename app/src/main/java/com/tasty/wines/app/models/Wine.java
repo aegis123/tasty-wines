@@ -1,15 +1,11 @@
 package com.tasty.wines.app.models;
 
 
-import java.util.List;
-
 public class Wine {
 
     public static final String RED = "red";
     public static final String WHITE = "white";
     public static final String ROSE = "rose";
-
-    private long id;
 
     private String color;
 
@@ -25,9 +21,8 @@ public class Wine {
 
     private String name;
 
-    private List<Review> reviews;
-
-    private float rating = -1;
+    private float rating = 0;
+    private String key;
 
     public Wine() {
     }
@@ -99,18 +94,18 @@ public class Wine {
     }
 
     public float getRating() {
-        if (rating == -1) {
-            double score = 0;
-            for (int i = 0; i < reviews.size(); i++) {
-                score += (double) reviews.get(i).getScore();
-            }
-            float avg = (float) (score / reviews.size());
-            if (avg > -1) {
-                rating = avg;
-            } else {
-                return 0;
-            }
-        }
         return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

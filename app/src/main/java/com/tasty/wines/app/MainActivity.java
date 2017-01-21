@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tasty.wines.app.models.Wine;
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         RecyclerView.Adapter<WineViewHolder> adapter = new FirebaseRecyclerAdapter<Wine, WineViewHolder>(Wine.class, R.layout.li_wine, WineViewHolder.class, databaseReference) {
+
+            @Override
+            protected Wine parseSnapshot(DataSnapshot snapshot) {
+                Wine wine = super.parseSnapshot(snapshot);
+                if (wine != null) {
+                    wine.setKey(snapshot.getKey());
+                }
+                return wine;
+            }
 
             @Override
             protected void populateViewHolder(WineViewHolder viewHolder, Wine model, int position) {

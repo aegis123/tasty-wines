@@ -39,7 +39,7 @@ class WineViewHolder extends RecyclerView.ViewHolder {
         winery.setText(wine.getWinery());
         name.setText(wine.getWinery());
         date.setText(wine.getWinery());
-        year.setText(wine.getYear());
+        year.setText(String.format("%s", wine.getYear()));
         ratingBar.setRating(wine.getRating());
     }
 }
