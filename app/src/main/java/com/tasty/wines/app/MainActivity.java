@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
         new MainActivity_ViewBinding<>(this, getWindow().getDecorView());
 
         setSupportActionBar(toolbar);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/wines");
-
+        databaseReference.keepSynced(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

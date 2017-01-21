@@ -31,6 +31,12 @@ class WineViewHolder extends RecyclerView.ViewHolder {
     public WineViewHolder(View itemView) {
         super(itemView);
         new WineViewHolder_ViewBinding<>(this, itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InfoActivity.startInfoActivity(v.getContext(), wine.getKey());
+            }
+        });
 
     }
 
@@ -41,7 +47,7 @@ class WineViewHolder extends RecyclerView.ViewHolder {
 
     private void updateView() {
         winery.setText(wine.getWinery());
-        name.setText(wine.getWinery());
+        name.setText(wine.getName());
         if (wine.getDateAdded() != null) {
 
             date.setText(dateFormat.format(wine.getDateAdded().getTime()));
