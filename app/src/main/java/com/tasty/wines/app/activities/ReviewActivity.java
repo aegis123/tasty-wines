@@ -87,7 +87,6 @@ public class ReviewActivity extends AppCompatActivity {
         };
 
 
-
         loadWineInfo();
     }
 
@@ -98,13 +97,13 @@ public class ReviewActivity extends AppCompatActivity {
 
         if (wineIdToReview == null) {
             Toast.makeText(this, "No wine defined", Toast.LENGTH_LONG);
-            wineIdToReview = "-Kb0-WZ0C7Zp6VNhdv7a "; //TODO remove
+            wineIdToReview = "-Kb0-WZ0C7Zp6VNhdv7a"; //TODO remove
             //finish();
             //return;
         }
-        mWineReference =  mFirebaseDatabase.getReference().child("wines").child(wineIdToReview);
+        mWineReference = mFirebaseDatabase.getReference().child("wines").child(wineIdToReview);
 
-        valueListener =  new ValueEventListener() {
+        valueListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Wine wine = dataSnapshot.getValue(Wine.class);
