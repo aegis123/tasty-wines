@@ -9,23 +9,25 @@ public class Wine {
     public static final String WHITE = "white";
     public static final String ROSE = "rose";
 
-    public long id;
+    private long id;
 
-    public String color;
+    private String color;
 
-    public String grape;
+    private String grape;
 
-    public int year;
+    private int year;
 
-    public String region;
+    private String region;
 
-    public String winery;
+    private String winery;
 
-    public String country;
+    private String country;
 
-    public String name;
+    private String name;
 
-    public List<Review> reviews;
+    private List<Review> reviews;
+
+    private float rating = -1;
 
     public Wine() {
     }
@@ -94,5 +96,21 @@ public class Wine {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getRating() {
+        if (rating == -1) {
+            double score = 0;
+            for (int i = 0; i < reviews.size(); i++) {
+                score += (double) reviews.get(i).getScore();
+            }
+            float avg = (float) (score / reviews.size());
+            if (avg > -1) {
+                rating = avg;
+            } else {
+                return 0;
+            }
+        }
+        return rating;
     }
 }
