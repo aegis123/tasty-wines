@@ -9,14 +9,17 @@ public class Review {
 
     public User user;
 
+    private String wine;
+
     public Review() {
     }
 
-    public Review(String body, int score, long date, User user) {
+    public Review(String body, int score, long date, User user, String wine) {
         this.body = body;
         this.score = score;
         this.date = date;
         this.user = user;
+        this.wine = wine;
     }
 
     public String getBody() {
@@ -49,5 +52,13 @@ public class Review {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getWine() {
+        return wine;
+    }
+
+    public void setWine(String wine) {
+        this.wine = wine;
     }
 }

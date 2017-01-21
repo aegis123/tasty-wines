@@ -2,6 +2,7 @@ package com.tasty.wines.app.models;
 
 
 import java.util.Calendar;
+import com.google.firebase.database.Exclude;
 
 public class Wine {
 
@@ -25,6 +26,7 @@ public class Wine {
 
     private float rating = 0;
 
+    @Exclude
     private String key;
 
     private Calendar dateAdded;
