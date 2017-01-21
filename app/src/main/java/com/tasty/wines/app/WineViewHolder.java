@@ -34,7 +34,7 @@ public class WineViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InfoActivity.startInfoActivity(v.getContext(), wine.getKey());
+                InfoActivity.startInfoActivity(v.getContext(), wine.getKey(), wine.getName());
             }
         });
 

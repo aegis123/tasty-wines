@@ -29,6 +29,7 @@ import butterknife.BindView;
 public class InfoActivity extends AppCompatActivity {
 
     private static final String DB_KEY = "db_key";
+    private static final String WINE_NAME = "wine_names";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -47,9 +48,10 @@ public class InfoActivity extends AppCompatActivity {
 
     private final DateFormat dateFormat = SimpleDateFormat.getDateInstance();
 
-    public static void startInfoActivity(Context context, @NonNull final String key) {
+    public static void startInfoActivity(Context context, @NonNull final String key, @NonNull final String name) {
         Intent intent = new Intent(context, InfoActivity.class);
         intent.putExtra(DB_KEY, key);
+        intent.putExtra(WINE_NAME, name);
         context.startActivity(intent);
     }
 
@@ -64,7 +66,10 @@ public class InfoActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra(DB_KEY)) {
             String key = getIntent().getStringExtra(DB_KEY);
+            String wineName = getIntent().getStringExtra(WINE_NAME);
             DatabaseReference wineDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/wines").child(key);
+            final Query reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews").orderByChild("wine").equalTo(wineName).getRef();
+
             wineDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,18 +84,6 @@ public class InfoActivity extends AppCompatActivity {
                     }
                     year.setText(String.format("%s", wine.getYear()));
                     ratingBar.setRating(wine.getRating());
-
-
-                    Query reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews").orderByChild("wine").equalTo(wine.getName());
-
-                    final FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, reviewRef) {
-                        @Override
-                        protected void populateViewHolder(ReviewViewHolder viewHolder, Review model, int position) {
-                            viewHolder.setReview(model);
-                        }
-                    };
-                    recyclerView.setAdapter(firebaseRecyclerAdapter);
-
                 }
 
                 @Override
@@ -98,6 +91,14 @@ public class InfoActivity extends AppCompatActivity {
 
                 }
             });
+
+            final FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, reviewRef) {
+                @Override
+                protected void populateViewHolder(ReviewViewHolder viewHolder, Review model, int position) {
+                    viewHolder.setReview(model);
+                }
+            };
+            recyclerView.setAdapter(firebaseRecyclerAdapter);
 
 
         } else {
