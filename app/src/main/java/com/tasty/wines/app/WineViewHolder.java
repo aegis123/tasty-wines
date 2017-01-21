@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import butterknife.BindView;
 
 
-class WineViewHolder extends RecyclerView.ViewHolder {
+public class WineViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tv_winery)
     TextView winery;
     @BindView(R.id.tv_wine_name)
