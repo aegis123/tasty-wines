@@ -241,7 +241,13 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 DatabaseReference reviewReference = mFirebaseDatabase.getReference("reviews").push();
-                reviewReference.setValue(review);
+                reviewReference.setValue(review).addOnCompleteListener(ReviewActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        finish();
+                    }
+                });
+
             }
         });
     }
