@@ -17,7 +17,7 @@
             android:id="@+id/iv_wine"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@color/colorAccent"/>
+            android:background="@drawable/wijn"/>
 
         <LinearLayout
             android:layout_width="match_parent"
