@@ -11,10 +11,6 @@ import com.firebase.ui.auth.ResultCodes;
 
 import java.util.Arrays;
 
-/**
- * Created by mark on 21-1-2017.
- */
-
 public class LoginHelper {
 
 
