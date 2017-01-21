@@ -15,6 +15,7 @@
         tools:listitem="@layout/li_wine"/>
 
     <TextView
+        android:id="@+id/tv_empty_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
