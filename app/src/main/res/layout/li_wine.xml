@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="88dp"
+              android:orientation="vertical"
+              android:paddingEnd="16dp"
+              android:paddingStart="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_wine"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
+
+            <TextView
+                android:id="@+id/tv_winery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Chateau de Pinet"/>
+
+            <TextView
+                android:id="@+id/tv_wine_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Picpoul de Pinet Languedoc"/>
+
+            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2007"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_date_added"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            tools:text="January 21, 2017"/>
+
+        <RatingBar
+            android:id="@+id/rt_rating"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"/>
+    </FrameLayout>
+</LinearLayout>

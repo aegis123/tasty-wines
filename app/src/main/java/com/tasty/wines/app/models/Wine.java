@@ -1,9 +1,8 @@
 package com.tasty.wines.app.models;
 
 
+import java.util.Calendar;
 import com.google.firebase.database.Exclude;
-
-import java.util.List;
 
 public class Wine {
 
@@ -12,23 +11,27 @@ public class Wine {
     public static final String ROSE = "rose";
 
     @Exclude
-    public String id;
+    private String id;
 
-    public String color;
+    private String color;
 
-    public String grape;
+    private String grape;
 
-    public int year;
+    private int year;
 
-    public String region;
+    private String region;
 
-    public String winery;
+    private String winery;
 
-    public String country;
+    private String country;
 
-    public String name;
+    private String name;
 
-    public List<Review> reviews;
+    private float rating = 0;
+
+    private String key;
+
+    private Calendar dateAdded;
 
     public Wine() {
     }
@@ -105,5 +108,29 @@ public class Wine {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Calendar getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Calendar dateAdded) {
+        this.dateAdded = dateAdded;
     }
 }
