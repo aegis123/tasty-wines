@@ -61,7 +61,7 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         new InfoActivity_ViewBinding<>(this, getWindow().getDecorView());
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (getIntent().hasExtra(DB_KEY)) {

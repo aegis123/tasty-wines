@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.tasty.wines.app.models.Review;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import butterknife.BindView;
 
 
@@ -20,6 +23,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.review_stars)
     RatingBar ratingBar;
     private Review review;
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public ReviewViewHolder(View itemView) {
         super(itemView);
@@ -28,7 +32,10 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
     private void updateView() {
         body.setText(review.getBody());
-        date.setText(String.format("%s", review.getDate()));
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(review.getDate());
+
+        date.setText(format.format(c.getTime()));
         ratingBar.setRating(review.getScore());
     }
 
