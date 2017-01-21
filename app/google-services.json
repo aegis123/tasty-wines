@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "509843445645-eeum255l0rc25j7li6246ierh9lctg6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tasty.wines.app",
+            "certificate_hash": "A5016D4D8046242DB7E2B206EB70DE32717E75B1"
+          }
+        },
+        {
           "client_id": "509843445645-7l6p45gjr77nkhpfbmessv5rtdihlmh7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
