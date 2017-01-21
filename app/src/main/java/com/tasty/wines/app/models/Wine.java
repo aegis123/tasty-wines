@@ -1,7 +1,7 @@
 package com.tasty.wines.app.models;
 
 
-import java.util.List;
+import java.util.Calendar;
 
 public class Wine {
 
@@ -9,23 +9,25 @@ public class Wine {
     public static final String WHITE = "white";
     public static final String ROSE = "rose";
 
-    public long id;
+    private String color;
 
-    public String color;
+    private String grape;
 
-    public String grape;
+    private int year;
 
-    public int year;
+    private String region;
 
-    public String region;
+    private String winery;
 
-    public String winery;
+    private String country;
 
-    public String country;
+    private String name;
 
-    public String name;
+    private float rating = 0;
 
-    public List<Review> reviews;
+    private String key;
+
+    private Calendar dateAdded;
 
     public Wine() {
     }
@@ -94,5 +96,29 @@ public class Wine {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Calendar getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Calendar dateAdded) {
+        this.dateAdded = dateAdded;
     }
 }
