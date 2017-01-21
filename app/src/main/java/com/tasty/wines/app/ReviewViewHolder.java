@@ -31,7 +31,11 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateView() {
-        body.setText(review.getBody());
+        String bodyText = review.getBody();
+        if (review.getUser() != null) {
+            bodyText = bodyText + "\nBy: " + review.getUser().getNickname();
+        }
+        body.setText(bodyText);
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(review.getDate());
 
