@@ -3,11 +3,11 @@ package com.tasty.wines.app.models;
 
 public class Review {
 
-    public String body;
-    public int score;
-    public long date;
+    private String body;
+    private int score;
+    private long date;
 
-    public User user;
+    private User user;
 
     private String wine;
 
