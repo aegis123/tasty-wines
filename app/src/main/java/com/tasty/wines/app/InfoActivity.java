@@ -68,7 +68,9 @@ public class InfoActivity extends AppCompatActivity {
             String key = getIntent().getStringExtra(DB_KEY);
             String wineName = getIntent().getStringExtra(WINE_NAME);
             DatabaseReference wineDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/wines").child(key);
-            final Query reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews").orderByChild("wine").equalTo(wineName).getRef();
+            DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://tasty-wine.firebaseio.com/reviews");
+
+            final Query queryReview = reviewRef.orderByChild("wine").equalTo(wineName);
 
             wineDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -92,7 +94,7 @@ public class InfoActivity extends AppCompatActivity {
                 }
             });
 
-            final FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, reviewRef) {
+            final FirebaseRecyclerAdapter<Review, ReviewViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Review, ReviewViewHolder>(Review.class, R.layout.li_review, ReviewViewHolder.class, queryReview) {
                 @Override
                 protected void populateViewHolder(ReviewViewHolder viewHolder, Review model, int position) {
                     viewHolder.setReview(model);
