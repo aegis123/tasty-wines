@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -18,9 +20,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tasty.wines.app.R;
+import com.tasty.wines.app.models.Grape;
 import com.tasty.wines.app.models.Review;
 import com.tasty.wines.app.models.User;
 import com.tasty.wines.app.models.Wine;
+
+import java.util.ArrayList;
 
 public class ReviewActivity extends AppCompatActivity {
 
@@ -38,8 +43,17 @@ public class ReviewActivity extends AppCompatActivity {
 
     private RatingBar ratingBar;
     private EditText reviewBody;
+    private AutoCompleteTextView wineGrape;
+    private AutoCompleteTextView wineName;
+    private AutoCompleteTextView wineColor;
+
     private String uid;
     private ValueEventListener valueListener;
+
+    ArrayAdapter<String> autoCompleteWineNames;
+    ArrayAdapter<String> autoCompleteWineGrapes;
+    ArrayAdapter<String> autoCompleteWineColors;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,10 @@ public class ReviewActivity extends AppCompatActivity {
         ratingBar.setStepSize(1.0f);
 
         reviewBody = (EditText) findViewById(R.id.review_body);
+
+        wineGrape = (AutoCompleteTextView) findViewById(R.id.review_grape);
+        wineName = (AutoCompleteTextView) findViewById(R.id.review_wine_name);
+        wineColor = (AutoCompleteTextView) findViewById(R.id.review_color);
 
         Button addButton = (Button) findViewById(R.id.review_add);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +106,67 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         loadWineInfo();
+        loadGrapes();
+        loadColors();
+        loadWines();
+    }
+
+    private void loadGrapes() {
+        autoCompleteWineGrapes = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, new ArrayList<String>());
+
+        DatabaseReference grapeReference = mFirebaseDatabase.getReference().child("grapes");
+
+        grapeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> grapesInDb = dataSnapshot.getChildren();
+                for (DataSnapshot g : grapesInDb) {
+                    Grape grape = g.getValue(Grape.class);
+                    if (grape != null) {
+                        autoCompleteWineGrapes.add(grape.getGrape());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        wineGrape.setAdapter(autoCompleteWineGrapes);
+    }
+
+    private void loadColors() {
+        autoCompleteWineColors = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, new ArrayList<String>());
+
+        autoCompleteWineColors.add(Wine.RED);
+        autoCompleteWineColors.add(Wine.WHITE);
+        autoCompleteWineColors.add(Wine.ROSE);
+
+        wineColor.setAdapter(autoCompleteWineColors);
+    }
+
+    private void loadWines() {
+        autoCompleteWineNames = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, new ArrayList<String>());
+
+        DatabaseReference grapeReference = mFirebaseDatabase.getReference().child("wines");
+
+        grapeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> winesInDb = dataSnapshot.getChildren();
+                for (DataSnapshot g : winesInDb) {
+                    Wine wine = g.getValue(Wine.class);
+                    if (wine != null) {
+                        autoCompleteWineNames.add(wine.getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        wineName.setAdapter(autoCompleteWineGrapes);
     }
 
     private void loadWineInfo() {
@@ -138,10 +217,10 @@ public class ReviewActivity extends AppCompatActivity {
         user.setUid(uid);
 
         Review reviewToSave = new Review();
-        reviewToSave.body = reviewBody.getText().toString();
-        reviewToSave.date = System.currentTimeMillis();
-        reviewToSave.score = Math.round(ratingBar.getRating());
-        reviewToSave.user = user;
+        reviewToSave.setBody(reviewBody.getText().toString());
+        reviewToSave.setDate(System.currentTimeMillis());
+        reviewToSave.setScore(Math.round(ratingBar.getRating()));
+        reviewToSave.setUser(user);
 
         mWineReference.child("reviews").push().setValue(reviewToSave);
 

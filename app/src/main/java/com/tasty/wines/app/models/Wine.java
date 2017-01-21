@@ -1,6 +1,8 @@
 package com.tasty.wines.app.models;
 
 
+import com.google.firebase.database.Exclude;
+
 import java.util.List;
 
 public class Wine {
@@ -9,7 +11,8 @@ public class Wine {
     public static final String WHITE = "white";
     public static final String ROSE = "rose";
 
-    public long id;
+    @Exclude
+    public String id;
 
     public String color;
 
@@ -38,6 +41,14 @@ public class Wine {
         this.winery = winery;
         this.country = country;
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getColor() {
